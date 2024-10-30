@@ -146,26 +146,26 @@ export default function MainPage() {
 
   const [selectedStory, setSelectedStory] = useState<number | null>(null);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
+  //   const [progress, setProgress] = useState(0);
   const [selectedPost, setSelectedPost] = useState<number | null>(null);
   const [newComment, setNewComment] = useState("");
 
   const handleStoryClick = (index: number) => {
     setSelectedStory(index);
     setCurrentStoryIndex(index);
-    setProgress(0);
+    // setProgress(0);
   };
 
   const handleStoryClose = () => {
     setSelectedStory(null);
     setCurrentStoryIndex(0);
-    setProgress(0);
+    // setProgress(0);
   };
 
   const handleNextStory = () => {
     if (selectedStory !== null && currentStoryIndex < stories.length - 1) {
       setCurrentStoryIndex((prev) => prev + 1);
-      setProgress(0);
+      //   setProgress(0);
     } else {
       handleStoryClose();
     }
@@ -174,7 +174,7 @@ export default function MainPage() {
   const handlePrevStory = () => {
     if (currentStoryIndex > 0) {
       setCurrentStoryIndex((prev) => prev - 1);
-      setProgress(0);
+      //   setProgress(0);
     }
   };
 
