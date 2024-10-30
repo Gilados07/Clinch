@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Dumbbell,
   Heart,
   MessageCircle,
   Share2,
@@ -485,7 +486,7 @@ export default function MainPage() {
       </Dialog>
 
       {/* Bottom Navigation */}
-      <nav className="mt-auto flex justify-around p-4 bg-white border-t">
+      {/* <nav className="mt-auto flex justify-around p-4 bg-white border-t">
         <Link to="/main" className="flex flex-col items-center">
           <Button variant="ghost" className="flex flex-col items-center">
             <Home className="h-6 w-6" />
@@ -504,7 +505,24 @@ export default function MainPage() {
             <span className="text-xs mt-1">Profile</span>
           </Button>
         </Link>
-      </nav>
+      </nav> */}
+      {/* Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300">
+        <div className="flex justify-around py-2">
+          <Link to="/main">
+            <Home className="h-6 w-6 text-[#7A3DB8]" />
+          </Link>
+          <Link to="/search">
+            <Search className="h-6 w-6 text-[#7A3DB8]" />
+          </Link>
+          <Link to="/workout">
+            <Dumbbell className="h-6 w-6 text-[#7A3DB8]" />
+          </Link>
+          <Link to="/profile">
+            <User className="h-6 w-6 text-[#7A3DB8]" />
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
