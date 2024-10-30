@@ -191,7 +191,7 @@ export default function ProfilePage() {
               Workout Routines
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[90vh]">
+          <SheetContent side="bottom" className="h-[47rem]">
             {!selectedRoutine ? (
               <>
                 <SheetHeader>
