@@ -147,26 +147,22 @@ export default function MainPage() {
 
   const [selectedStory, setSelectedStory] = useState<number | null>(null);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-  //   const [progress, setProgress] = useState(0);
   const [selectedPost, setSelectedPost] = useState<number | null>(null);
   const [newComment, setNewComment] = useState("");
 
   const handleStoryClick = (index: number) => {
     setSelectedStory(index);
     setCurrentStoryIndex(index);
-    // setProgress(0);
   };
 
   const handleStoryClose = () => {
     setSelectedStory(null);
     setCurrentStoryIndex(0);
-    // setProgress(0);
   };
 
   const handleNextStory = () => {
     if (selectedStory !== null && currentStoryIndex < stories.length - 1) {
       setCurrentStoryIndex((prev) => prev + 1);
-      //   setProgress(0);
     } else {
       handleStoryClose();
     }
@@ -175,7 +171,6 @@ export default function MainPage() {
   const handlePrevStory = () => {
     if (currentStoryIndex > 0) {
       setCurrentStoryIndex((prev) => prev - 1);
-      //   setProgress(0);
     }
   };
 
@@ -232,7 +227,7 @@ export default function MainPage() {
               ...post.comments,
               {
                 id: post.comments.length + 1,
-                user: "CurrentUser",
+                user: "Gilad_Bre",
                 text: newComment,
                 userImage: "/images/giladPic.jpg", // Replace with current user's image
               },
@@ -245,6 +240,10 @@ export default function MainPage() {
     setNewComment("");
   };
 
+  const handlePostClick = (postId: number) => {
+    setSelectedPost(postId);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gray-100 font-sans">
       <header className="bg-[#7A3DB8] text-white p-4 text-center flex justify-center">
@@ -254,7 +253,7 @@ export default function MainPage() {
       <ScrollArea className="flex-grow">
         {/* Stories Section */}
         <div className="p-4">
-          <div className="flex space-x-4 overflow-x-auto pb-2">
+          <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
             {stories.map((story, index) => (
               <motion.div
                 key={story.id}
@@ -278,7 +277,11 @@ export default function MainPage() {
         {/* Posts Section */}
         <div className="p-4 space-y-4">
           {posts.map((post) => (
-            <Card key={post.id} className="bg-white rounded-lg shadow">
+            <Card
+              key={post.id}
+              className="bg-white rounded-lg shadow cursor-pointer"
+              onClick={() => handlePostClick(post.id)}
+            >
               <CardContent className="p-4">
                 <div className="flex items-center mb-2">
                   <Avatar className="h-10 w-10">
@@ -303,7 +306,10 @@ export default function MainPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleLike(post.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLike(post.id);
+                    }}
                     className={post.userLiked ? "text-[#7A3DB8]" : ""}
                   >
                     <Heart
@@ -316,7 +322,10 @@ export default function MainPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleComment(post.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleComment(post.id);
+                    }}
                   >
                     <MessageCircle className="h-5 w-5 mr-1" />
                     {post.comments.length}
@@ -324,7 +333,10 @@ export default function MainPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleShare(post.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShare(post.id);
+                    }}
                   >
                     <Share2 className="h-5 w-5 mr-1" />
                     {post.shares}
@@ -436,90 +448,116 @@ export default function MainPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Comments Dialog  */}
+      {/* Post Dialog */}
       <Dialog
         open={selectedPost !== null}
         onOpenChange={() => setSelectedPost(null)}
       >
-        <DialogContent className="sm:max-w-[425px]">
-          <div className="max-h-[60vh] overflow-y-auto">
-            <h3 className="text-lg font-semibold mb-4">Comments</h3>
-            <div className="space-y-4">
-              {selectedPost !== null &&
-                posts
-                  .find((p) => p.id === selectedPost)
-                  ?.comments.map((comment) => (
-                    <div key={comment.id} className="flex items-start gap-2">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage
-                          src={comment.userImage}
-                          alt={comment.user}
-                        />
-                        <AvatarFallback>
-                          {comment.user.slice(0, 2).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm">{comment.user}</p>
-                        <p className="text-sm">{comment.text}</p>
+        <DialogContent className="sm:max-w-[90%] sm:h-[90%] p-0">
+          {selectedPost !== null && (
+            <div className="flex flex-col h-full">
+              <div className="p-4 border-b">
+                <div className="flex items-center">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage
+                      src={posts.find((p) => p.id === selectedPost)?.image}
+                      alt={posts.find((p) => p.id === selectedPost)?.user}
+                    />
+                    <AvatarFallback>
+                      {posts
+                        .find((p) => p.id === selectedPost)
+                        ?.user.slice(0, 2)
+                        .toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="ml-2 font-semibold">
+                    {posts.find((p) => p.id === selectedPost)?.user}
+                  </span>
+                </div>
+              </div>
+              <ScrollArea className="flex-grow p-4">
+                {posts.find((p) => p.id === selectedPost)?.type === "image" && (
+                  <div className="mb-4 rounded-lg overflow-hidden">
+                    <img
+                      src={posts.find((p) => p.id === selectedPost)?.image}
+                      alt="Post content"
+                      className="w-full  h-auto max-h-[400px] object-cover"
+                    />
+                  </div>
+                )}
+                <p className="mb-4">
+                  {posts.find((p) => p.id === selectedPost)?.content}
+                </p>
+                <div className="space-y-4">
+                  {posts
+                    .find((p) => p.id === selectedPost)
+                    ?.comments.map((comment) => (
+                      <div key={comment.id} className="flex items-start gap-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage
+                            src={comment.userImage}
+                            alt={comment.user}
+                          />
+                          <AvatarFallback>
+                            {comment.user.slice(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <p className="font-semibold text-sm">
+                            {comment.user}
+                          </p>
+                          <p className="text-sm">{comment.text}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
+              </ScrollArea>
+              <div className="p-4 border-t">
+                <div className="flex gap-2">
+                  <Textarea
+                    placeholder="Add a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button
+                    size="icon"
+                    onClick={() =>
+                      selectedPost && handleAddComment(selectedPost)
+                    }
+                    className="bg-[#7A3DB8] hover:bg-[#7A3DB8]/90"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2 mt-4">
-            <Textarea
-              placeholder="Add a comment..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="flex-1"
-            />
-            <Button
-              size="icon"
-              onClick={() => selectedPost && handleAddComment(selectedPost)}
-              className="bg-[#7A3DB8] hover:bg-[#7A3DB8]/90"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
+          )}
         </DialogContent>
       </Dialog>
 
       {/* Bottom Navigation */}
-      {/* <nav className="mt-auto flex justify-around p-4 bg-white border-t">
-        <Link to="/main" className="flex flex-col items-center">
-          <Button variant="ghost" className="flex flex-col items-center">
-            <Home className="h-6 w-6" />
-            <span className="text-xs mt-1">Home</span>
-          </Button>
-        </Link>
-        <Link to="/discover" className="flex flex-col items-center">
-          <Button variant="ghost" className="flex flex-col items-center">
-            <Search className="h-6 w-6" />
-            <span className="text-xs mt-1">Discover</span>
-          </Button>
-        </Link>
-        <Link to="/profile" className="flex flex-col items-center">
-          <Button variant="ghost" className="flex flex-col items-center">
-            <User className="h-6 w-6" />
-            <span className="text-xs mt-1">Profile</span>
-          </Button>
-        </Link>
-      </nav> */}
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300">
+      <div className="sticky bottom-0 bg-white border-t border-gray-300">
         <div className="flex justify-around py-2">
           <Link to="/main">
-            <Home className="h-6 w-6 text-[#7A3DB8]" />
+            <Button variant="ghost" size="icon">
+              <Home className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
-          <Link to="/search">
-            <Search className="h-6 w-6 text-[#7A3DB8]" />
+          <Link to="/discover">
+            <Button variant="ghost" size="icon">
+              <Search className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
           <Link to="/workout">
-            <Dumbbell className="h-6 w-6 text-[#7A3DB8]" />
+            <Button variant="ghost" size="icon">
+              <Dumbbell className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
           <Link to="/profile">
-            <User className="h-6 w-6 text-[#7A3DB8]" />
+            <Button variant="ghost" size="icon">
+              <User className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
         </div>
       </div>

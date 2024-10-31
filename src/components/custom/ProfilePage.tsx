@@ -144,7 +144,7 @@ export default function ProfilePage() {
       {/* Profile Header */}
       <div className="bg-[#7A3DB8] text-white p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold">Profile</h1>
+          <h1 className="text-xl font-bold">Clinch</h1>
           <Button variant="ghost" size="icon">
             <Settings className="h-6 w-6" />
           </Button>
@@ -191,7 +191,7 @@ export default function ProfilePage() {
               Workout Routines
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[85%]">
+          <SheetContent side="bottom" className="h-[80%]">
             {!selectedRoutine ? (
               <>
                 <SheetHeader>
@@ -288,19 +288,27 @@ export default function ProfilePage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300">
+      <div className="sticky bottom-0 bg-white border-t border-gray-300">
         <div className="flex justify-around py-2">
           <Link to="/main">
-            <Home className="h-6 w-6 text-[#7A3DB8]" />
+            <Button variant="ghost" size="icon">
+              <Home className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
-          <Link to="/search">
-            <Search className="h-6 w-6 text-[#7A3DB8]" />
+          <Link to="/discover">
+            <Button variant="ghost" size="icon">
+              <Search className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
           <Link to="/workout">
-            <Dumbbell className="h-6 w-6 text-[#7A3DB8]" />
+            <Button variant="ghost" size="icon">
+              <Dumbbell className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
           <Link to="/profile">
-            <User className="h-6 w-6 text-[#7A3DB8]" />
+            <Button variant="ghost" size="icon">
+              <User className="h-6 w-6 text-[#7A3DB8]" />
+            </Button>
           </Link>
         </div>
       </div>
