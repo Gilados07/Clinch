@@ -108,7 +108,7 @@ export function PostPage({ post, onUpdatePost }: PostPageProps) {
               <img
                 src={localPost.thumbnail}
                 alt="Post content"
-                 className="w-full h-auto max-h-[400px] object-cover"
+                 className="w-full h-auto max-h-[300px] object-cover"
               />
             </div>
           )}
